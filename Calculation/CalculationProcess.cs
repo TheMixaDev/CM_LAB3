@@ -13,19 +13,19 @@ namespace Lab2.Calculation
             ulong n = starter;
             double lastResult = Double.NaN;
             int iteration = 0;
-            while(iteration < 1000)
+            while(iteration < 63)
             {
                 double result = Double.NaN;
                 if (method == 0)
-                    result = Rectangles.CalculateLeft(equation.Function, bounds, n);
+                    result = Rectangles.CalculateLeft(equation, bounds, n);
                 if (method == 1)
-                    result = Rectangles.CalculateRight(equation.Function, bounds, n);
+                    result = Rectangles.CalculateRight(equation, bounds, n);
                 if (method == 2)
-                    result = Rectangles.CalculateMiddle(equation.Function, bounds, n);
+                    result = Rectangles.CalculateMiddle(equation, bounds, n);
                 if (method == 3)
-                    result = Trapezoid.Calculate(equation.Function, bounds, n);
+                    result = Trapezoid.Calculate(equation, bounds, n);
                 if (method == 4)
-                    result = Simpson.Calculate(equation.Function, bounds, n);
+                    result = Simpson.Calculate(equation, bounds, n);
                 if(Double.IsNaN(lastResult) || result - lastResult > accuracy)
                 {
                     lastResult = result;

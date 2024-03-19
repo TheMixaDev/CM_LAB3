@@ -8,20 +8,21 @@ namespace Lab2.Calculation
 {
     public class Simpson
     {
-        public static double Calculate(Equation.Value equation, Tuple<double, double> bounds, ulong n)
+        public static double Calculate(Equation equation, Tuple<double, double> bounds, ulong n)
         {
+            EquationUtils.CheckBounds(equation, bounds);
             double even = 0;
             double odd = 0;
             double step = (bounds.Item2 - bounds.Item1) / n;
             for (ulong i = 1; i < n; i++)
             {
-                double value = equation(bounds.Item1 + step * i);
+                double value = equation.Function(bounds.Item1 + step * i, bounds);
                 if (i % 2 == 0)
                     even += value;
                 else
                     odd += value;
             }
-            return step / 3 * (equation(bounds.Item1) + 4 * odd + 2 * even + equation(bounds.Item2));
+            return step / 3 * (equation.Function(bounds.Item1, bounds) + 4 * odd + 2 * even + equation.Function(bounds.Item2, bounds));
         }
     }
 }

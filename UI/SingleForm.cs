@@ -23,6 +23,7 @@ namespace Lab2.UI
             new Equation((x) => -x*x + 5, "y = -x² + 5"),
             new Equation((x) => x*x*x - x + 4, "y = x³ - x + 4"),
             new Equation((x) => Math.Pow(Math.E, x) - 3d, "y = exp(x) - 3"),
+            new Equation((x) => 1 / x, "y = 1 / x", 0),
         };
         public SingleForm()
         {
@@ -74,6 +75,12 @@ namespace Lab2.UI
 
             double leftBound = ParseDouble(boundBox.Text);
             double rightBound = ParseDouble(secondBoundBox.Text);
+            if(leftBound > rightBound)
+            {
+                double temp = leftBound;
+                leftBound = rightBound;
+                rightBound = temp;
+            }
             Tuple<double, double> limit = new Tuple<double, double>(leftBound, rightBound);
             double epsilon = ParseDouble(epsilonBox.Text);
             ulong starter = ulong.Parse(startDivBox.Text);
@@ -95,13 +102,25 @@ namespace Lab2.UI
                 {
                     instance.Invoke(new Action(() =>
                     {
+                        calculateButton.Visible = true;
+                        resultLabel.Text = $"Превышен лимит итераций";
                         MessageBox.Show("Превышен лимит итераций", "Ошибка вычислений", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    }));
+                } catch(NotFiniteNumberException)
+                {
+                    instance.Invoke(new Action(() =>
+                    {
+                        calculateButton.Visible = true;
+                        resultLabel.Text = $"Обнаружен разрыв функции или бесконечность в процессе вычислений";
+                        MessageBox.Show("Обнаружен разрыв функции или бесконечность в процессе вычислений", "Ошибка вычислений", MessageBoxButtons.OK, MessageBoxIcon.Error);
                     }));
                 }
                 catch (Exception ex)
                 {
                     instance.Invoke(new Action(() =>
                     {
+                        calculateButton.Visible = true;
+                        resultLabel.Text = $"Ошибка вычислений";
                         MessageBox.Show(ex.Message, "Ошибка вычислений", MessageBoxButtons.OK, MessageBoxIcon.Error);
                     }));
                 }

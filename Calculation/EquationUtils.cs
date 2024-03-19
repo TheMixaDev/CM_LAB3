@@ -51,5 +51,11 @@ namespace Lab2.Calculation
 
             return number.ToString();
         }
+
+        public static void CheckBounds(Equation equation, Tuple<double, double> bounds)
+        {
+            equation.Function(bounds.Item1, bounds);
+            equation.Function(bounds.Item2, bounds);
+        }
     }
 }
